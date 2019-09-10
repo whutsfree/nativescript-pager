@@ -900,7 +900,9 @@ class UICollectionDelegateImpl extends NSObject
             next = -1;
         }
 
-        const nextIndex = this.indexOfCellBeforeDragging + next;
+        let nextIndex = this.indexOfCellBeforeDragging + next;
+        if (nextIndex < 0) nextIndex = 0;
+        if (nextIndex >= owner._childrenCount) nextIndex = owner._childrenCount - 1;
         const attribute = collection.collectionViewLayout.layoutAttributesForItemAtIndexPath(NSIndexPath.indexPathForRowInSection(nextIndex, 0));
         const x = owner.orientation === 'vertical' ? target.x : attribute.frame.origin.x - (owner._getSpacing() + owner._getPeaking());
         const y = owner.orientation === 'vertical' ? attribute.frame.origin.y - (owner._getSpacing() + owner._getPeaking()) : target.y;
