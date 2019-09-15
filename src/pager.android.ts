@@ -572,7 +572,11 @@ function initPagerChangeCallback() {
         onPageSelected(position: number) {
             const owner = this.owner && this.owner.get();
             if (owner) {
-                if (owner.isLayoutValid && owner.selectedIndex !== position) {
+                // The owner.isLayoutValid is sometimes returning false (unsure why, but maybe the component just
+                // isn't done being layed out?), which then prevents the selected index from changing and being
+                // emitted as an Angular output. By commenting out the isLayoutValid check, it solves the
+                // particular scenario having the problem--not sure if there might be any negative side-effects.
+                if (/*owner.isLayoutValid && */owner.selectedIndex !== position) {
                     owner.indicatorView.setSelection(position);
                     selectedIndexProperty.nativeValueChange(owner, position);
                 }
